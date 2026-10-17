@@ -26,8 +26,10 @@ jobs:
           mkdir -p /tmp/jarvis-tests
           javac -d /tmp/jarvis-tests app/src/main/java/com/jarvis/mobile/CommandParser.java tools/ParserSmokeTest.java
           java -cp /tmp/jarvis-tests com.jarvis.mobile.ParserSmokeTest
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Locate preinstalled Android SDK
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME:-/usr/local/lib/android/sdk}" >> "$GITHUB_ENV"
+          command -v sdkmanager || true
       - name: Set up Gradle 8.11.1
         uses: gradle/actions/setup-gradle@v4
         with:
