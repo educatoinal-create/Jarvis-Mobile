@@ -68,7 +68,7 @@ final class CommandRouter {
   }catch(SecurityException ex){callback.finished("Android denied this permission. Check JARVIS settings.");}
    catch(Exception ex){callback.finished("Couldn't perform this command on this device. Try a different one.");}
  }
- private static String enc(String s){return URLEncoder.encode(s,StandardCharsets.UTF_8);}
+ private static String enc(String s){return Uri.encode(s);}
  private static void open(Activity a,String action,String uri){
   Intent intent=new Intent(action,Uri.parse(uri));
   intent.addCategory(Intent.CATEGORY_DEFAULT);
