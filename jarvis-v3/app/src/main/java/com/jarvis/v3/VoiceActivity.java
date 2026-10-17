@@ -89,6 +89,18 @@ public final class VoiceActivity extends Activity implements RecognitionListener
   if(resolved||!alive)return;
   if(value==null||value.trim().isEmpty()){feedback.setText("Say or type a command first.");return;}
   resolved=true;release();
+  if(getIntent().getBooleanExtra("FROM_BUBBLE",false) && CommandRouter.isFull()){
+   final Command action=CommandParser.parse(value);
+   if(BubbleActions.supports(action.kind)){
+    final android.content.Context app=getApplicationContext();
+    finish();
+    new Handler(Looper.getMainLooper()).postDelayed(()->{
+      String outcome=BubbleActions.run(action);
+      SpeechOut.say(app,outcome);
+    },850);
+    return;
+   }
+  }
   Intent main=new Intent(this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
   main.putExtra("JARVIS_INPUT",value.trim());
   startActivity(main);

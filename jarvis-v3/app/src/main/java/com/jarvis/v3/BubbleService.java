@@ -42,7 +42,7 @@ public final class BubbleService extends Service {
     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,PixelFormat.TRANSLUCENT);
   lp.gravity=Gravity.RIGHT|Gravity.CENTER_VERTICAL;
   view.setOnClickListener(v->{
-   try {Intent voice=new Intent(this,VoiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);startActivity(voice);}
+   try {Intent voice=new Intent(this,VoiceActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("FROM_BUBBLE",true);startActivity(voice);}
    catch(RuntimeException ignored){}
   });
   try{wm.addView(view,lp);bubble=view;}catch(RuntimeException ex){stopSelf();}
