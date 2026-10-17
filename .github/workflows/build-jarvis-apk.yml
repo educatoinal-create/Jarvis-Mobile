@@ -16,6 +16,7 @@ jobs:
           test -f JarvisMobile_Reviewed_Source.zip || { echo "::error::Upload JarvisMobile_Reviewed_Source.zip to the repository root first."; exit 1; }
           unzip -o -q JarvisMobile_Reviewed_Source.zip
           test -f app/build.gradle
+          sed -i 's/android:windowDimAmount/android:backgroundDimAmount/' app/src/main/res/values/styles.xml
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
