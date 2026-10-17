@@ -26,6 +26,6 @@ public final class NotificationService extends NotificationListenerService {
     if(!title.isEmpty()){result.append(title.substring(0,Math.min(48,title.length()))).append(". ");shown++;}
    }
    return shown==0?"No safe notification summaries available.":result.toString();
-  }catch(SecurityException|RuntimeException e){return "Cannot read notifications right now.";}
+  }catch(RuntimeException e){return "Cannot read notifications right now.";}
  }
 }
