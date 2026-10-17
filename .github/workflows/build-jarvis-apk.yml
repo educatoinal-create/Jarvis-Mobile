@@ -15,6 +15,17 @@ jobs:
         run: |
           test -f JarvisMobile_Reviewed_Source.zip || { echo "::error::Upload JarvisMobile_Reviewed_Source.zip to the repository root first."; exit 1; }
           unzip -o -q JarvisMobile_Reviewed_Source.zip
+          cp overrides/ListenActivity.java app/src/main/java/com/jarvis/mobile/ListenActivity.java
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          p=Path('app/src/main/AndroidManifest.xml')
+          ns='http://schemas.android.com/apk/res/android'
+          ET.register_namespace('android',ns)
+          tree=ET.parse(p)
+          ET.SubElement(ET.SubElement(tree.getroot().find('queries'),'intent'),'action',{'{'+ns+'}name':'android.speech.action.RECOGNIZE_SPEECH'})
+          tree.write(p,encoding='utf-8',xml_declaration=True)
+          PY
           test -f app/build.gradle
           sed -i 's/android:windowDimAmount/android:backgroundDimAmount/' app/src/main/res/values/styles.xml
       - name: Set up JDK 17
@@ -42,6 +53,6 @@ jobs:
       - name: Upload installable debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: Jarvis-Mobile-debug-APK
+          name: Jarvis-Mobile-Full-V2-Voice-Fix-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
